@@ -319,14 +319,23 @@ body {
   color: #333;
   text-align: center;
   padding: 10px 14px;
-  border-radius: 12px;
   background: #ffe4ef;
   transition: 0.25s;
+  border-radius: 0;
+}
+
+.side-nav a:first-child {
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+}
+
+.side-nav a:last-child {
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
 }
 
 .side-nav a:hover {
   background: #ffb6c1;
-  border-radius: 18px;
   color: white;
   font-weight: 600;
 }
