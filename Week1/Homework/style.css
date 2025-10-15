@@ -31,9 +31,7 @@ body {
   text-align: center;
 }
 
-.header-left {
-  text-align: left;
-}
+.header-left { text-align: left; }
 
 .header-center h1 {
   font-size: 20px;
@@ -47,9 +45,7 @@ body {
   margin-top: 2px;
 }
 
-.header-right {
-  text-align: right;
-}
+.header-right { text-align: right; }
 
 .header-right img {
   width: 28px;
@@ -58,9 +54,7 @@ body {
   transition: 0.2s;
 }
 
-.header-right img:hover {
-  opacity: 1;
-}
+.header-right img:hover { opacity: 1; }
 
 .mini-profile {
   width: 45px;
@@ -191,12 +185,15 @@ body {
 @media (max-width: 1200px) {
   .card-list { grid-template-columns: repeat(4, 1fr); }
 }
+
 @media (max-width: 992px) {
   .card-list { grid-template-columns: repeat(3, 1fr); }
 }
+
 @media (max-width: 768px) {
   .card-list { grid-template-columns: repeat(2, 1fr); }
 }
+
 @media (max-width: 480px) {
   .card-list { grid-template-columns: 1fr; }
 }
@@ -242,9 +239,7 @@ body {
   transition: color 0.3s;
 }
 
-.card .heart:hover {
-  color: #ff4f91;
-}
+.card .heart:hover { color: #ff4f91; }
 
 /* Photos 섹션 */
 .photos-section {
@@ -255,6 +250,7 @@ body {
   padding: 40px;
   text-align: left;
   box-shadow: 0 2px 6px rgba(255, 105, 180, 0.1);
+  overflow: hidden;
 }
 
 .photos-section h2 {
@@ -263,25 +259,43 @@ body {
   color: #b53372;
 }
 
+/* 뷰포트 */
 .scroll-container {
-  display: flex;
   overflow-x: auto;
-  gap: 16px;
   scroll-snap-type: x mandatory;
   padding-bottom: 10px;
 }
 
-.scroll-container img {
-  width: 240px;
-  height: 160px;
-  border-radius: 8px;
-  object-fit: cover;
-  scroll-snap-align: center;
-  transition: transform 0.3s;
+.scroll-container::-webkit-scrollbar { display: none; }
+
+/* 이미지 무한 루프 */
+.scroll-track {
+  display: inline-flex;
+  gap: 20px;
+  width: max-content;
+  animation: marqueeLoop 14s linear infinite;
 }
 
-.scroll-container img:hover {
-  transform: scale(1.05);
+.scroll-track img {
+  flex: 0 0 220px;
+  height: 150px;
+  border-radius: 10px;
+  object-fit: cover;
+  scroll-snap-align: center;
+  transition: transform 0.25s ease;
+}
+
+.scroll-track img:hover {
+  transform: scale(1.06);
+}
+
+.scroll-container:hover .scroll-track {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeLoop {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 /* 사이드 Nav */
@@ -317,7 +331,7 @@ body {
   font-weight: 600;
 }
 
-/*  Footer */
+/* Footer */
 .footer {
   text-align: center;
   background: #FF69B4;
@@ -327,7 +341,7 @@ body {
   border-top: 2px solid #ff8ac8;
 }
 
-/*  반응형  */
+/* 반응형 */
 @media (max-width: 900px) {
   .greeting-section,
   .tags-section,
@@ -336,16 +350,13 @@ body {
     margin: 20px;
     max-width: none;
   }
-
   .greeting-section {
     flex-direction: column;
     text-align: center;
   }
-
   .greeting-profile {
     flex: none;
   }
-
   .side-nav {
     display: none;
   }
