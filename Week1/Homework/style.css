@@ -5,6 +5,11 @@
   font-family: 'Pretendard', sans-serif;
 }
 
+:root {
+  --main-pink: #ff4f91;
+  --white: #fff;
+}
+
 body {
   background-color: #FFE6EC;
   color: #333;
@@ -36,7 +41,7 @@ body {
 .header-center h1 {
   font-size: 20px;
   font-weight: 600;
-  color: #ff4f91;
+  color: var(--main-pink);
 }
 
 .header-center p {
@@ -147,7 +152,9 @@ body {
   box-shadow: 0 2px 6px rgba(255, 105, 180, 0.1);
 }
 
-.tags-section h2 {
+.tags-section h2,
+.card-section h2,
+.photos-section h2 {
   margin-bottom: 20px;
   font-size: 20px;
   color: #b53372;
@@ -176,12 +183,6 @@ body {
   margin: 0 auto 30px 280px;
   padding: 40px;  
   box-shadow: 0 2px 6px rgba(255, 105, 180, 0.1);
-}
-
-.card-section h2 {
-  margin-bottom: 20px;
-  font-size: 20px;
-  color: #b53372;
 }
 
 .card-list {
@@ -309,7 +310,7 @@ body {
 
 /* 한마디 섹션 */
 .quote-section {
-  background: #fff;
+  background: var(--white);
   border-radius: 14px;
   max-width: 1100px;
   margin: 0 auto 60px 280px;
