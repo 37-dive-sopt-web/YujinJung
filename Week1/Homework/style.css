@@ -68,7 +68,7 @@ body {
 }
 
 /* Introduce 섹션 */
-.introduce-section {
+#introduce-section {
   background: #FFD1DC;
   border-radius: 16px;
   max-width: 1100px;
@@ -104,14 +104,14 @@ body {
   flex: 1;
 }
 
-.introduce-section h2 {
+#introduce-section h2 {
   font-size: 26px;
   font-weight: 700;
   margin-bottom: 4px;
   color: #b53372;
 }
 
-.introduce-section p {
+#introduce-section p {
   margin-bottom: 12px;
   opacity: 0.9;
   font-size: 15px;
@@ -143,7 +143,7 @@ body {
 }
 
 /* Tags 섹션 */
-.tags-section {
+#tags-section {
   background: #fff;
   border-radius: 14px;
   max-width: 1100px;
@@ -152,21 +152,21 @@ body {
   box-shadow: 0 2px 6px rgba(255, 105, 180, 0.1);
 }
 
-.tags-section h2,
-.card-section h2,
-.photos-section h2 {
+#tags-section h2,
+#card-section h2,
+#photos-section h2 {
   margin-bottom: 20px;
   font-size: 20px;
   color: #b53372;
 }
 
-.tags-section .tags {
+#tags-section .tags {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
-.tags-section .tags span {
+#tags-section .tags span {
   background: #ffe4ef;
   color: #7b2c53;
   padding: 10px 16px;
@@ -176,7 +176,7 @@ body {
 }
 
 /* Card 섹션 */
-.card-section {
+#card-section {
   background: #fff;
   border-radius: 14px;
   max-width: 1100px;
@@ -252,7 +252,7 @@ body {
 .card .heart:hover { color: #ff4f91; }
 
 /* Photos 섹션 */
-.photos-section {
+#photos-section {
   background: #fff;
   border-radius: 14px;
   max-width: 1100px;
@@ -262,7 +262,7 @@ body {
   overflow: hidden;
 }
 
-.photos-section h2 {
+#photos-section h2 {
   margin-bottom: 20px;
   font-size: 20px;
   color: #b53372;
@@ -309,7 +309,7 @@ body {
 }
 
 /* 한마디 섹션 */
-.quote-section {
+#quote-section {
   background: var(--white);
   border-radius: 14px;
   max-width: 1100px;
@@ -318,13 +318,13 @@ body {
   box-shadow: 0 2px 6px rgba(255, 105, 180, 0.1);
 }
 
-.quote-section h2 {
+#quote-section h2 {
   margin-bottom: 16px;
   font-size: 20px;
   color: #b53372;
 }
 
-.quote-section p {
+#quote-section p {
   font-size: 16px;
   color: #333;
   font-weight: 500;
@@ -387,9 +387,9 @@ body {
 /* 반응형 */
 @media (max-width: 900px) {
   .greeting-section,
-  .tags-section,
-  .introduce-section,
-  .photos-section {
+  #tags-section,
+  #introduce-section,
+  #photos-section {
     margin: 20px;
     max-width: none;
   }
