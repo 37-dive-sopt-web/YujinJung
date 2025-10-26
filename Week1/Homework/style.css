@@ -236,6 +236,7 @@ body {
   padding: 6px 12px 22px;
   font-size: 13px;
   opacity: 0.9;
+  flex-wrap: wrap;
 }
 
 .card .heart {
@@ -271,6 +272,7 @@ body {
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   padding-bottom: 10px;
+  padding-top: 12px;
 }
 
 .scroll-container::-webkit-scrollbar { display: none; }
