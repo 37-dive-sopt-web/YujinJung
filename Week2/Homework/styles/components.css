@@ -47,6 +47,7 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.45);
+  z-index: 900; 
 }
 
 .modal {
@@ -55,6 +56,7 @@
   border-radius: 14px;
   width: min(560px, 92vw);
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2);
+  z-index: 901;  
 }
 
 .modal::backdrop {
