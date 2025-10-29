@@ -162,11 +162,13 @@ deleteSelectedBtn.addEventListener("click", () => {
 /* modal */
 function openModal() {
   backdrop.hidden = false;
+  document.body.style.overflow = "hidden";
   modal.showModal();
 }
 
 function closeModal() {
   modal.close();
+  document.body.style.overflow = "";
   backdrop.hidden = true;
 }
 
@@ -178,6 +180,18 @@ closeModalBtn.addEventListener("click", (e) => {
 });
 
 backdrop.addEventListener("click", closeModal);
+
+// 모달 바깥 클릭(= dialog의 배경 영역)도 닫히도록 보강
+modal.addEventListener("click", (e) => {
+  const rect = modal.getBoundingClientRect();
+  const inside =
+    e.clientX >= rect.left &&
+    e.clientX <= rect.right &&
+    e.clientY >= rect.top &&
+    e.clientY <= rect.bottom;
+
+  if (!inside) closeModal();
+});
 
 addForm.addEventListener("submit", (e) => {
   e.preventDefault();
