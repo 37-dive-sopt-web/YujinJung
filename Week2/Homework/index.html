@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>웹계인 관리 페이지</title>
+  <link rel="stylesheet" href="./styles/tokens.css" />
+  <link rel="stylesheet" href="./styles/base-layout.css" />
+  <link rel="stylesheet" href="./styles/components.css" />
+</head>
+<body>
+  <!-- header -->
+  <header class="header">
+    <div class="header__left" aria-hidden="true">👽</div>
+    <h1 class="header__center">웹계인 관리 페이지</h1>
+    <div class="header__right">👾 DIVE SOPT 37기 웹파트원 정유진</div>
+  </header>
+
+  <main class="container">
+    <!-- filter card -->
+    <section class="card">
+      <h2 class="card__title">검색 필터</h2>
+      <form id="filterForm" class="filter-grid">
+        <!-- 1행: 1개 -->
+        <label class="field">
+          <span>이름</span>
+          <input type="text" name="name" placeholder="이름을 입력하세요." />
+        </label>
+
+        <!-- 2행: 1개 -->
+        <label class="field">
+          <span>영문 이름</span>
+          <input type="text" name="englishName" placeholder="영문 이름을 입력하세요." />
+        </label>
+
+        <!-- 3행: 3개 -->
+        <label class="field">
+          <span>깃허브</span>
+          <input type="text" name="github" placeholder="깃허브 아이디를 입력하세요." />
+        </label>
+
+        <label class="field">
+          <span>성별</span>
+          <select name="gender">
+            <option value="">전체</option>
+            <option value="female">여자</option>
+            <option value="male">남자</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>역할</span>
+          <select name="role">
+            <option value="">전체</option>
+            <option value="YB">YB</option>
+            <option value="OB">OB</option>
+          </select>
+        </label>
+
+        <!-- 4행: 2개 -->
+        <label class="field">
+          <span>금잔디조</span>
+          <input type="number" name="codeReviewGroup" min="1" max="9" placeholder="금잔디조를 입력하세요. (1-9)" />
+        </label>
+
+        <label class="field">
+          <span>나이</span>
+          <input type="number" name="age" min="1" placeholder="나이를 입력하세요." />
+        </label>
+
+        <!-- buttons -->
+        <div class="filter-actions">
+          <button type="submit" class="btn btn--primary" id="applyBtn">적용</button>
+          <button type="button" class="btn btn--ghost" id="resetBtn">초기화</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- table card -->
+    <section class="card">
+      <div class="table-head">
+        <h2 class="card__title">37기 웹 파트 목록</h2>
+
+        <div class="table-head__right">
+          <button class="btn btn--danger" id="deleteSelectedBtn">선택 삭제</button>
+          <button class="btn btn--primary" id="openAddModalBtn">추가</button>
+        </div>
+      </div>
+
+      <div id="activeFilters" class="active-filters" aria-live="polite"></div>
+
+      <div class="table-wrap">
+        <table id="memberTable">
+          <thead>
+            <tr>
+              <th style="width:44px;">
+                <input type="checkbox" id="checkAll" aria-label="전체 선택" />
+              </th>
+              <th>이름</th>
+              <th>영문 이름</th>
+              <th>깃허브</th>
+              <th>성별</th>
+              <th>역할</th>
+              <th>금잔디조</th>
+              <th>나이</th>
+            </tr>
+          </thead>
+          <tbody><!-- JS 렌더링 --></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- modal -->
+  <div id="modalBackdrop" class="backdrop" hidden></div>
+  <dialog id="addModal" class="modal">
+    <form method="dialog" id="addForm" class="modal__content">
+      <div class="modal__head">
+        <h3>멤버 추가</h3>
+        <button class="icon-btn" id="closeModalBtn" aria-label="닫기">✕</button>
+      </div>
+
+      <div class="modal__grid">
+        <label class="field">
+          <span>이름</span>
+          <input name="name" type="text" placeholder="이름을 입력하세요." required />
+        </label>
+
+        <label class="field">
+          <span>영문 이름</span>
+          <input name="englishName" type="text" placeholder="영문 이름을 입력하세요." required />
+        </label>
+
+        <label class="field">
+          <span>깃허브</span>
+          <input name="github" type="text" placeholder="깃허브 아이디를 입력하세요." required />
+        </label>
+
+        <label class="field">
+          <span>성별</span>
+          <select name="gender" required>
+            <option value="" disabled selected>선택</option>
+            <option value="female">여자</option>
+            <option value="male">남자</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>역할</span>
+          <select name="role" required>
+            <option value="" disabled selected>선택</option>
+            <option value="YB">YB</option>
+            <option value="OB">OB</option>
+          </select>
+        </label>
+
+        <label class="field">
+          <span>금잔디조</span>
+          <input name="codeReviewGroup" type="number" min="1" max="9" placeholder="금잔디조를 입력하세요. (1-9)" required />
+        </label>
+
+        <label class="field">
+          <span>나이</span>
+          <input name="age" type="number" min="1" placeholder="나이를 입력하세요." required />
+        </label>
+      </div>
+
+      <div class="modal__foot">
+        <button class="btn btn--primary" id="submitAddBtn">추가</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="./js/app.js"></script>
+</body>
+</html>
