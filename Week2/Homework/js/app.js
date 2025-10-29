@@ -2,7 +2,6 @@ import { STORAGE_KEY, ensureSeed, loadData, saveData } from "./storage.js";
 
 const tableBody = document.querySelector("#memberTable tbody");
 const checkAllEl = document.querySelector("#checkAll");
-const resetSeedBtn = document.getElementById("resetSeedBtn");
 const deleteSelectedBtn = document.querySelector("#deleteSelectedBtn");
 
 const filterForm = document.getElementById("filterForm");
@@ -245,26 +244,27 @@ filterForm.addEventListener("submit", (e) => {
   applyFilter();
 });
 
+// 필터 및 멤버 데이터 초기화
+resetBtn.addEventListener("click", () => {
+  const ok = confirm(
+    "필터 및 멤버 데이터를 초기화할까요?\n(로컬에 저장된 현재 목록은 삭제됩니다!)"
+  );
+  if (!ok) return;
+
+  localStorage.removeItem(STORAGE_KEY);
+  ensureSeed();
+  filterForm.reset();
+  activeFiltersEl.innerHTML = "";
+  renderTable(loadData());
+
+  alert("필터 및 멤버 데이터가 초기화되었습니다!");
+});
+
 resetBtn.addEventListener("click", () => {
   filterForm.reset();
   // 활성화된 필터chip(activeFiltersEl)도 초기화
   activeFiltersEl.innerHTML = "";
   renderTable(loadData());
-});
-
-// 멤버 데이터 초기화 기능
-resetSeedBtn.addEventListener("click", () => {
-  const ok = confirm(
-    "멤버 데이터를 처음 상태로 다시 되돌립니다. \n현재 로컬에 저장된 목록은 삭제됩니다. 진행할까요?"
-  );
-  if (!ok) return;
-
-  localStorage.removeItem(STORAGE_KEY);
-  ensureSeed();                         
-  filterForm.reset();                   
-  activeFiltersEl.innerHTML = "";
-  renderTable(loadData());             
-  alert("멤버 데이터가 초기화되었습니다!");
 });
 
 /* 초기화 */
