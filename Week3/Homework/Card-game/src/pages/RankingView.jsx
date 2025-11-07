@@ -5,11 +5,11 @@ import { clearRankings, formatTime, readRankings, sortRankings } from "../utils/
 function fmtDate(ms) {
   const d = new Date(ms);
   const yyyy = d.getFullYear();
-  const mm = String(d.getMonth()+1).padStart(2,"0");
-  const dd = String(d.getDate()).padStart(2,"0");
-  const hh = String(d.getHours()).padStart(2,"0");
-  const mi = String(d.getMinutes()).padStart(2,"0");
-  const ss = String(d.getSeconds()).padStart(2,"0");
+  const mm = String(d.getMonth() + 1).padStart(2, "0");
+  const dd = String(d.getDate()).padStart(2, "0");
+  const hh = String(d.getHours()).padStart(2, "0");
+  const mi = String(d.getMinutes()).padStart(2, "0");
+  const ss = String(d.getSeconds()).padStart(2, "0");
   return `${yyyy}-${mm}-${dd} ${hh}:${mi}:${ss}`;
 }
 
@@ -18,7 +18,9 @@ export default function RankingView() {
   const [rows, setRows] = useState([]);
   // 랭킹 새로고침 함수
   const refresh = () => setRows(sortRankings(readRankings()));
-  useEffect(() => { refresh(); }, []);
+  useEffect(() => {
+    refresh();
+  }, []);
 
   // 기록 초기화 버튼 핸들러
   const onClear = () => {
@@ -27,16 +29,17 @@ export default function RankingView() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-6">
+    <div className="mx-auto max-w-5xl px-4 py-6">
       {/* 전체 랭킹 박스 */}
       <div className="bg-sky-100 border border-sky-200 rounded-2xl p-4">
-
         {/* 제목 + 초기화 버튼 영역 */}
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-semibold text-sky-900">랭킹 보드</h3>
+
           <button
             onClick={onClear}
-            className="px-3 py-1.5 rounded-md bg-rose-100 text-rose-700 border border-rose-200 hover:bg-rose-200"
+            className="px-2.5 py-1 rounded-full bg-rose-400 text-white text-xs font-medium
+            shadow-sm hover:bg-rose-500 active:bg-rose-600 transition"
           >
             기록 초기화
           </button>
@@ -55,12 +58,14 @@ export default function RankingView() {
             </thead>
 
             <tbody>
-              {/* 기록이 하나도 없을 경우 */}
               {rows.length === 0 && (
-                <tr><td colSpan={4} className="px-3 py-6 text-center text-gray-500">아직 기록이 없습니다.</td></tr>
+                <tr>
+                  <td colSpan={4} className="px-3 py-6 text-center text-gray-500">
+                    아직 기록이 없습니다.
+                  </td>
+                </tr>
               )}
 
-              {/* 기록이 있을 경우: 한 줄씩 표시 */}
               {rows.map((r, i) => (
                 <tr key={i} className="border-t border-sky-200">
                   <td className="px-3 py-2">{i + 1}</td>
