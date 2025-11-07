@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+/* flip / highlight */
+.card { perspective: 800px; }
+.card .card-face { backface-visibility: hidden; transition: transform 300ms; }
+.card .card-back { transform: rotateY(180deg); }
+.card.flipped .card-face { transform: rotateY(180deg); }
+.card.flipped .card-back { transform: rotateY(0deg); }
+.match-glow { box-shadow: 0 0 0 3px rgba(59,130,246,.35), 0 0 12px rgba(59,130,246,.45); }
