@@ -170,7 +170,7 @@ thead th {
 tbody td {
   padding: 12px 14px;
   border-bottom: 1px solid var(--line);
-  background: #fff;
+  background: var(--white);
 }
 
 tbody tr:hover td {
