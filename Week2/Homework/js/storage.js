@@ -8,6 +8,8 @@ export const loadData = () =>
 export const saveData = (arr) =>
   localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
 
+export const clearData = () => localStorage.removeItem(STORAGE_KEY);
+
 export function ensureSeed() {
   if (!localStorage.getItem(STORAGE_KEY)) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(members));
