@@ -25,11 +25,11 @@ body {
   gap: 12px;
   padding: 18px 20px;
   background: var(--mint);
-  border-bottom: 1px solid #94d7ca;
+  border-bottom: 1px solid var(--mint-200);
 }
 
 .header__left {
-  justify-self: start;
+  justify-self: center;
   font-size: 22px;
 }
 
@@ -41,7 +41,7 @@ body {
 }
 
 .header__right {
-  justify-self: end;
+  justify-self: center;
   font-size: 12px;
   opacity: 0.8;
 }
@@ -162,7 +162,7 @@ thead th {
   color: #4b5a63;
   position: sticky;
   top: 0;
-  background: #ecfaf6;
+  background: var(--mint-50);
   border-bottom: 1px solid var(--line);
   padding: 12px 14px;
 }
@@ -174,11 +174,11 @@ tbody td {
 }
 
 tbody tr:hover td {
-  background: #fbfffe;
+  background: var(--table-hover);
 }
 
 tbody a {
-  color: #0b6b7a;
+  color: var(--mint-700);
   text-decoration: none;
 }
 
