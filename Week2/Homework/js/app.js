@@ -196,6 +196,12 @@ modal.addEventListener("click", (e) => {
   if (!inside) closeModal();
 });
 
+// ESC(=dialog cancel)로 닫힐 때
+modal.addEventListener("cancel", (e) => {
+  e.preventDefault(); 
+  closeModal();
+});
+
 addForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
