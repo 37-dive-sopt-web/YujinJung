@@ -1,4 +1,4 @@
-import { STORAGE_KEY, ensureSeed, loadData, saveData } from "./storage.js";
+import { STORAGE_KEY, ensureSeed, loadData, saveData, clearData } from "./storage.js";
 
 const tableBody = document.querySelector("#memberTable tbody");
 const checkAllEl = document.querySelector("#checkAll");
@@ -16,6 +16,9 @@ const closeModalBtn = document.getElementById("closeModalBtn");
 
 /* 공용 유틸 ( "male"/"female" => "남자"/"여자"로 변환) */
 const genderToKorean = (g) => (g === "male" ? "남자" : "여자");
+
+/* 로컬 데이터 캐시 */
+let members = [];
 
 /* table 렌더링 */
 function renderTable(rows) {
@@ -53,11 +56,11 @@ function renderTable(rows) {
   // 새로 그릴 때마다 개별 체크박스에 리스너 부착 + 전체선택 초기화
   tableBody
     .querySelectorAll(".row-check")
-    .forEach((cb) => (cb.onchange = syncCheckAll));
+    .forEach((checkbox) => (checkbox.onchange = syncCheckAll));
   checkAllEl.checked = false;
 }
 
-function renderActiveChips(v) {
+function renderActiveChips(filters) {
   const label = {
     name: "이름",
     englishName: "영문 이름",
@@ -68,11 +71,8 @@ function renderActiveChips(v) {
     age: "나이",
   };
 
-  // 필터 객체를 [key, value] 배열로 변환
-  const html = Object.entries(v)
-    // 비어있는 값 제거
+  const html = Object.entries(filters)
     .filter(([, val]) => val !== "" && val !== null && val !== undefined)
-    // 한글 라벨 붙여 chip 형태 HTML 생성
     .map(
       ([k, val]) =>
         `<span class="chip">${label[k]}: ${
@@ -100,29 +100,33 @@ function getFormValues() {
 }
 
 function applyFilter() {
-  // 전체 멤버 데이터 불러오기
-  const list = loadData();
   // 폼에 입력된 필터 값 읽기
-  const v = getFormValues();
+  const filters = getFormValues();
 
-  const filtered = list.filter((m) => {
-    if (v.name && !m.name.includes(v.name)) return false;
+  const filtered = members.filter((m) => {
+    if (filters.name && !m.name.includes(filters.name)) return false;
     if (
-      v.englishName &&
-      !m.englishName.toLowerCase().includes(v.englishName.toLowerCase())
+      filters.englishName &&
+      !m.englishName.toLowerCase().includes(filters.englishName.toLowerCase())
     )
       return false;
-    if (v.github && !m.github.toLowerCase().includes(v.github.toLowerCase()))
+    if (
+      filters.github &&
+      !m.github.toLowerCase().includes(filters.github.toLowerCase())
+    )
       return false;
-    if (v.gender && m.gender !== v.gender) return false;
-    if (v.role && m.role !== v.role) return false;
-    if (v.codeReviewGroup && String(m.codeReviewGroup) !== String(v.codeReviewGroup))
+    if (filters.gender && m.gender !== filters.gender) return false;
+    if (filters.role && m.role !== filters.role) return false;
+    if (
+      filters.codeReviewGroup &&
+      String(m.codeReviewGroup) !== String(filters.codeReviewGroup)
+    )
       return false;
-    if (v.age && String(m.age) !== String(v.age)) return false;
+    if (filters.age && String(m.age) !== String(filters.age)) return false;
     return true;
   });
 
-  renderActiveChips(v);
+  renderActiveChips(filters);
   renderTable(filtered);
 }
 
@@ -130,7 +134,6 @@ function applyFilter() {
 // 아래 행들 모두 선택되어 있으면 전체선택도 체크
 function syncCheckAll() {
   const checks = tableBody.querySelectorAll(".row-check");
-  // 전체 선택 박스를 클릭하면 모든 행의 체크 상태를 일괄 변경
   checkAllEl.checked =
     checks.length > 0 && Array.from(checks).every((c) => c.checked);
 }
@@ -140,7 +143,7 @@ checkAllEl.addEventListener("change", (e) => {
   const checked = e.currentTarget.checked;
   tableBody
     .querySelectorAll(".row-check")
-    .forEach((cb) => (cb.checked = checked));
+    .forEach((checkbox) => (checkbox.checked = checked));
 });
 
 /* 선택 삭제 */
@@ -151,10 +154,10 @@ deleteSelectedBtn.addEventListener("click", () => {
 
   if (ids.length === 0) return alert("삭제할 항목을 선택하세요.");
 
-  // 로컬스토리지에도 반영
-  const next = loadData().filter((m) => !ids.includes(m.id));
-  // 방금 필터링된 새 배열(next)을 로컬스토리지에 다시 저장
-  saveData(next);
+  // 캐시 및 로컬스토리지에 반영
+  members = members.filter((m) => !ids.includes(m.id));
+  saveData(members);
+
   // 현재 필터 유지한 채 리렌더링
   applyFilter();
 });
@@ -162,13 +165,13 @@ deleteSelectedBtn.addEventListener("click", () => {
 /* modal */
 function openModal() {
   backdrop.hidden = false;
-  document.body.style.overflow = "hidden";
+  document.body.classList.add("is-locked");
   modal.showModal();
 }
 
 function closeModal() {
   modal.close();
-  document.body.style.overflow = "";
+  document.body.classList.remove("is-locked");
   backdrop.hidden = true;
 }
 
@@ -197,7 +200,7 @@ addForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
   const fd = new FormData(addForm);
-  const v = Object.fromEntries(fd.entries());
+  const values = Object.fromEntries(fd.entries());
 
   const required = [
     "name",
@@ -210,31 +213,32 @@ addForm.addEventListener("submit", (e) => {
   ];
 
   for (const k of required) {
-    if (!v[k] || String(v[k]).trim() === "") {
+    if (!values[k] || String(values[k]).trim() === "") {
       alert("모든 항목을 입력/선택해주세요.");
       return;
     }
   }
 
-  // 기존 데이터 불러오기
-  const list = loadData();
-  const newId = list.length ? Math.max(...list.map((m) => m.id)) + 1 : 1;
+  // 새 ID 생성
+  const newId = members.length ? Math.max(...members.map((m) => m.id)) + 1 : 1;
 
   const newMember = {
     id: newId,
-    name: v.name.trim(),
-    englishName: v.englishName.trim(),
-    github: v.github.trim(),
-    gender: v.gender,
-    role: v.role,
-    codeReviewGroup: Number(v.codeReviewGroup),
-    age: Number(v.age),
+    name: values.name.trim(),
+    englishName: values.englishName.trim(),
+    github: values.github.trim(),
+    gender: values.gender,
+    role: values.role,
+    codeReviewGroup: Number(values.codeReviewGroup),
+    age: Number(values.age),
   };
 
-  saveData([...list, newMember]);
+  members = [...members, newMember];
+  saveData(members);
+
   addForm.reset();
   closeModal();
-  // 필터 유지한 채 테이블 리렌더링
+  // 현재 필터 유지한 채 테이블 리렌더링
   applyFilter();
 });
 
@@ -244,29 +248,25 @@ filterForm.addEventListener("submit", (e) => {
   applyFilter();
 });
 
-// 필터 및 멤버 데이터 초기화
+/* 초기화(데이터/필터) — 핸들러 통합 */
 resetBtn.addEventListener("click", () => {
   const ok = confirm(
     "필터 및 멤버 데이터를 초기화할까요?\n(로컬에 저장된 현재 목록은 삭제됩니다!)"
   );
   if (!ok) return;
 
-  localStorage.removeItem(STORAGE_KEY);
-  ensureSeed();
+  clearData();     // storage.js로 분리
+  ensureSeed();    // 시드 재주입
+  members = loadData();
+
   filterForm.reset();
   activeFiltersEl.innerHTML = "";
-  renderTable(loadData());
+  renderTable(members);
 
   alert("필터 및 멤버 데이터가 초기화되었습니다!");
 });
 
-resetBtn.addEventListener("click", () => {
-  filterForm.reset();
-  // 활성화된 필터chip(activeFiltersEl)도 초기화
-  activeFiltersEl.innerHTML = "";
-  renderTable(loadData());
-});
-
 /* 초기화 */
 ensureSeed();
-renderTable(loadData());
+members = loadData();
+renderTable(members);
