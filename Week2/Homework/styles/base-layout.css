@@ -193,6 +193,10 @@ tbody a:hover {
   margin: 4px 0 12px;
 }
 
+body.is-locked { 
+  overflow: hidden; 
+}
+
 /* 반응형 */
 @media (max-width: 720px) {
   .filter-grid > .field:nth-of-type(n) {
