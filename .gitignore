@@ -1,0 +1,10 @@
+# Week 폴더 무시
+Week1/
+Week2/
+Week3/
+
+# node_modules 무시
+node_modules/
+
+# 기타 빌드 파일
+dist/
