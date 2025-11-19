@@ -19,5 +19,10 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      'react-compiler/react-compiler': 'off',
+      'react-compiler/react-internal': 'off',
+      'react-refresh/only-export-components': 'off',
+    },
   },
 ])
