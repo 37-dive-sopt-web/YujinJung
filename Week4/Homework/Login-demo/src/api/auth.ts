@@ -1,12 +1,10 @@
-export interface LoginRequest {
-  username: string;
-  password: string;
-}
+import { apiClient } from "./client";
+import type { LoginRequest, LoginResponse } from "../types/auth";
 
-export interface LoginResponse {
-  id: number;
-  username: string;
-  name: string;
-  email: string;
-  age: number;
+export async function login(payload: LoginRequest): Promise<LoginResponse> {
+  const { data } = await apiClient.post<LoginResponse>(
+    "/api/v1/auth/login",
+    payload
+  );
+  return data;
 }
